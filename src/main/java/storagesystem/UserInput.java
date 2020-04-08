@@ -1,6 +1,7 @@
 package storagesystem;
 
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class UserInput {
@@ -12,7 +13,7 @@ public class UserInput {
 
         System.out.println("=== SIMPLE STORAGE SYSTEM ===");
         System.out.println("=== Select option:        ===");
-        System.out.println("1 - Start mass import dorm CSV file");
+        System.out.println("1 - Start mass-import from CSV file");
         System.out.println("2 - Import data from JSON backup");
         System.out.println("3 - Export storage status to JSON backup");
         System.out.println("4 - GET state of given product");
@@ -23,6 +24,7 @@ public class UserInput {
         System.out.println("9 - EXIT program");
 
         int selected = scanner.nextInt();
+        scanner.nextLine();
         if (isBetween(selected, 1, 9)) {
             switch (selected) {
                 case 1:
@@ -51,17 +53,17 @@ public class UserInput {
                     break;
                 case 5:
                     System.out.println("Write product name and quantity");
-                    ProcessData.modifyState("ADD", scanner.nextLine(), scanner.nextInt());
+                    ProcessData.modifyState("ADD", scanner.nextLine(), readIntInput());
                     startProgram();
                     break;
                 case 6:
                     System.out.println("Write product name and quantity");
-                    ProcessData.modifyState("REMOVE", scanner.nextLine(), scanner.nextInt());
+                    ProcessData.modifyState("REMOVE", scanner.nextLine(), readIntInput());
                     startProgram();
                     break;
                 case 7:
                     System.out.println("Write product name and quantity");
-                    ProcessData.modifyState("SET", scanner.nextLine(), scanner.nextInt());
+                    ProcessData.modifyState("SET", scanner.nextLine(), readIntInput());
                     startProgram();
                     break;
                 case 8:
@@ -76,7 +78,21 @@ public class UserInput {
 
     }
 
-    public static boolean isBetween(int x, int lower, int upper) {
+    private static boolean isBetween(int x, int lower, int upper) {
         return lower <= x && x <= upper;
+    }
+
+    private int readIntInput() {
+        int input = 0;
+        try {
+            input = scanner.nextInt();
+        } catch (InputMismatchException e) {
+            System.out.println("Please write proper integer value");
+            input = 0;
+        } catch (Exception e) {
+        } finally {
+            scanner.nextLine();
+        }
+        return input;
     }
 }

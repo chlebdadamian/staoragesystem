@@ -68,10 +68,10 @@ class ProcessData {
             Path path = Paths.get(OpenData.getPATH());
             String directory = path.getParent().toString();
             writer.writeValue(new File(directory + File.separator + getExportFileName()), getListOfProducts());
+            System.out.println("Export successful");
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Export successful");
     }
 
     void importState() {
@@ -84,12 +84,13 @@ class ProcessData {
             Map<String, Integer> tempMap = getMapper().readValue(new File(directory + File.separator + getExportFileName()), typeReference);
             getListOfProducts().clear();
             tempMap.forEach(Commands.SET::perform);
+            System.out.println("Import successful");
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.println("Import successful");
+
     }
 
     void printState() {
